@@ -41,13 +41,16 @@
         android:layout_below="@id/textView2"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-android:layout_marginStart="100dp"
+        android:buttonTint="#000"
+        android:layout_marginStart="100dp"
         android:onClick="check"
         android:layout_marginBottom="10dp"
         android:text="Whipped Cream" />
 
     <CheckBox
         android:id="@+id/checkBox2"
+        android:buttonTint="#000"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/checkBox"
