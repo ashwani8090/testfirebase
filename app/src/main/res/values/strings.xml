@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TestApp</string>
+
+    <string-array name="spinner">
+        <item>M</item>
+        <item>S</item>
+        <item>Xl</item>
+
+    </string-array>
+
+
+
 </resources>
