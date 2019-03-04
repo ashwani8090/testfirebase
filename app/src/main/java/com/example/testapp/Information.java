@@ -5,10 +5,10 @@ public class Information {
     private String Name;
     private String Phone;
     private String Email;
-    private  int image;
+    private  String image;
 
 
-    public Information(String name, String phone, String email,int image) {
+    public Information(String name, String phone, String email,String image) {
         Name = name;
         Phone = phone;
         Email = email;
@@ -43,11 +43,11 @@ public class Information {
         Email = email;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 }

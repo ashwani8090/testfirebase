@@ -1,5 +1,6 @@
 package com.example.testapp;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,12 +21,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    public ArrayList<Information> data = new ArrayList<>();
+    public ArrayList<Upload1> data = new ArrayList<Upload1>();
     public RecyclerView.LayoutManager layoutManager;
     public RecyclerView recyclerView;
     public ListAdapter adapter;
@@ -34,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private int image;
     private String Name, Phone, Email, TName;
     private EditText name, phone, email;
-    private DatabaseReference firebaseDatabase;
+    private DatabaseReference firebaseDatabase,databaseReference;
     private Button button, getButton;
     private ImageView imageView;
 
@@ -43,16 +42,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        databaseReference=FirebaseDatabase.getInstance().getReference("uploads");
 
-        firebaseDatabase.child("").addValueEventListener(new ValueEventListener() {
+       databaseReference.child("").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 data.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                    Information information = dataSnapshot1.getValue(Information.class);
-                    data.add(information);
+                    Upload1 upload1 = dataSnapshot1.getValue(Upload1.class);
+                    data.add(upload1);
 
                 }
 
@@ -106,12 +106,26 @@ public class MainActivity extends AppCompatActivity {
 
                 /*learn how to retreive images from firebase*/
 
+
+
+
                 String id = P;
-               Information information = new Information(N, P, E, );
+               Information information = new Information(N, P, E,"" );
+
                 firebaseDatabase.child(id).setValue(information);
 
             }
 
+        });
+
+
+
+
+        getButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,Nextpage.class));
+            }
         });
 
 
