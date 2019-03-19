@@ -1,9 +1,9 @@
 package com.example.testapp;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,8 +19,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+
+import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,11 +32,12 @@ public class MainActivity extends AppCompatActivity {
     public RecyclerView.LayoutManager layoutManager;
     public RecyclerView recyclerView;
     public ListAdapter adapter;
+    public StorageReference firebaseStorage,firebaseStorage2;
     private TextView textView;
     private int image;
-    private String Name, Phone, Email, TName;
+    private String Name, Phone, Email, TName,url;
     private EditText name, phone, email;
-    private DatabaseReference firebaseDatabase,databaseReference;
+    private DatabaseReference firebaseDatabase, databaseReference , firebaseDatabase1, firebaseDatabase2;
     private Button button, getButton;
     private ImageView imageView;
 
@@ -42,20 +46,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        databaseReference=FirebaseDatabase.getInstance().getReference("uploads");
+        databaseReference = FirebaseDatabase.getInstance().getReference("uploads");
 
-       databaseReference.child("").addValueEventListener(new ValueEventListener() {
+        firebaseStorage = getInstance().getReference("uploads");
+
+
+        databaseReference.child("").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 data.clear();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
+                    url=dataSnapshot1.getValue(Upload1.class).getUrl();
                     Upload1 upload1 = dataSnapshot1.getValue(Upload1.class);
                     data.add(upload1);
 
                 }
 
+
+                Toast.makeText(MainActivity.this, ""+url, Toast.LENGTH_SHORT).show();
                 adapter = new ListAdapter(data, MainActivity.this);
                 recyclerView.setAdapter(adapter);
                 recyclerView.setLayoutManager(layoutManager);
@@ -70,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
 
 
     }
@@ -87,9 +101,42 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         getButton = findViewById(R.id.button2);
         firebaseDatabase = FirebaseDatabase.getInstance().getReference("Customer");
+
+        firebaseDatabase1 = FirebaseDatabase.getInstance().getReference("Customer");
+
+        firebaseDatabase2 = FirebaseDatabase.getInstance().getReference("Customer");
+
         recyclerView = findViewById(R.id.recycler);
         layoutManager = new LinearLayoutManager(this);
-         imageView=findViewById(R.id.imageView);
+        imageView = findViewById(R.id.imageView);
+
+
+
+/*
+
+        firebaseStorage2 = FirebaseStorage.getInstance().getReference("upload");
+
+
+        Glide.with(getApplicationContext()).using(new FirebaseImageLoader()).
+                load(firebaseStorage).into(image1);
+
+
+      firebaseStorage2.child("1551717648673.jpg").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+          @Override
+          public void onSuccess(Uri uri) {
+
+
+
+
+              Picasso.with(getApplicationContext()).load(uri.toString()).into(image1);
+
+          }
+      });
+*/
+
+
+
+
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -107,24 +154,24 @@ public class MainActivity extends AppCompatActivity {
                 /*learn how to retreive images from firebase*/
 
 
-
-
                 String id = P;
-               Information information = new Information(N, P, E,"" );
+                Information information = new Information(N, P, E, "");
 
-                firebaseDatabase.child(id).setValue(information);
+                firebaseDatabase.child("top").child("color").child("RED").child("size").setValue(information);
+
+                firebaseDatabase.child("Kurti").child("color").child("RED").child("size").setValue(information);
+
+                //   firebaseDatabase.child(id).setValue(information);
 
             }
 
         });
 
 
-
-
         getButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Nextpage.class));
+                startActivity(new Intent(MainActivity.this, Nextpage.class));
             }
         });
 
